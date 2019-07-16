@@ -89,3 +89,4 @@ public class GolCanvas extends Application {
         launch(args);
     }
 }
+g
