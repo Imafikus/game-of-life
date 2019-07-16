@@ -11,12 +11,13 @@ import javafx.stage.Stage;
 
 public class GolCanvas extends Application {
 
-    static Integer width = 300;
-    static Integer height = 300;
-    static Integer cellSize = 10;
-    static Integer borderOffset = 1;
+    static int width = 300;
+    static int height = 300;
+    static int cellSize = 10;
+    static int borderOffset = 1;
     static Color emptyCellColor = Color.WHITE;
     static Color fullCellColor = Color.BLUE;
+    static int numberOfCells = 10;
 
     @Override
     public void start(Stage stage) {
@@ -29,8 +30,7 @@ public class GolCanvas extends Application {
         Canvas canvas = new Canvas(width, height);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        // drawEmptyRectangle(gc);
-
+        setRandomCells(gc, numberOfCells);
         drawGrid(gc);
 
         root.getChildren().addAll(canvas);
@@ -59,11 +59,30 @@ public class GolCanvas extends Application {
 
     }
 
-    private void drawRectangle(GraphicsContext gc) {
+    private void drawRectangle(GraphicsContext gc, int x, int y) {
 
         gc.setFill(fullCellColor);
-        gc.fillRect(0, 0, cellSize, cellSize);
+        gc.fillRect(x, y, cellSize, cellSize);
 
+    }
+
+    private void setRandomCells(GraphicsContext gc, int numberOfCells) {
+        for(int i = 0; i < numberOfCells; i++) {
+
+            int[] coords = getRandomCoordinates();
+            int x = coords[0];
+            int y = coords[1];
+
+            drawRectangle(gc, x, y);
+        }
+    }
+
+    private int[] getRandomCoordinates() {
+        int x = (int)(Math.random() * 30) * 10;
+        int y = (int)(Math.random() * 30) * 10;
+
+        int[] toReturn = {x, y};
+        return  toReturn;
     }
 
     public static void main(String[] args) {
