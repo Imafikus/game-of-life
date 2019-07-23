@@ -2,14 +2,9 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-import java.util.ArrayList;
-
 
 public class GolCanvas extends Application {
 
@@ -46,14 +41,16 @@ public class GolCanvas extends Application {
 
 
         //GOL loop
-        int n = 2;
+        int n = 1;
         while(n > 0) {
+
             for (int i = 0; i < cellInfo.length; i++) {
                 for (int j = 0; j < cellInfo.length; j++) {
                     updateCell(i, j);
                     drawRectangle(gc, i, j, cellInfo[i][j]);
                 }
             }
+
             drawGrid(gc);
             root.getChildren().addAll(canvas);
             Scene scene = new Scene(root, width, height, Color.WHITE);
@@ -86,7 +83,6 @@ public class GolCanvas extends Application {
             gc.lineTo(width, y);
             gc.stroke();
         }
-
     }
 
     private void drawRectangle(GraphicsContext gc, int x, int y, boolean cellType) {
@@ -96,7 +92,6 @@ public class GolCanvas extends Application {
         } else {
             gc.setFill(aliveCellColor);
         }
-
 
         gc.fillRect(x, y, cellSize, cellSize);
 
@@ -149,6 +144,11 @@ public class GolCanvas extends Application {
     }
 
     private int getNumberOfAliveNeighbours(int x, int y) {
+
+        int scaledWidth = width / cellSize;
+        int scaledHeight = height / cellSize;
+
+        System.out.println("Current x, y: " + x + " " + y);
         int alive = 0;
 
         //upper left
@@ -158,22 +158,22 @@ public class GolCanvas extends Application {
         if(y - 1 >= 0 && cellInfo[x][y - 1] == ALIVE) alive++;
 
         //upper right
-        if(x + 1 <= width && cellInfo[x + 1][y] == ALIVE) alive++;
+        if(x + 1 < scaledWidth && cellInfo[x + 1][y] == ALIVE) alive++;
 
         //left
         if(x - 1 >= 0 && cellInfo[x - 1][y] == ALIVE) alive++;
 
         //right
-        if(x + 1 <= width && cellInfo[x + 1][y] == ALIVE) alive++;
+        if(x + 1 < scaledWidth && cellInfo[x + 1][y] == ALIVE) alive++;
 
         // bottom left
-        if(x - 1 >= 0 && y + 1 <= height  && cellInfo[x - 1][y + 1] == ALIVE) alive++;
+        if(x - 1 >= 0 && y + 1 < scaledHeight  && cellInfo[x - 1][y + 1] == ALIVE) alive++;
 
         //  bottom
-        if(y + 1 <= height  && cellInfo[x][y + 1] == ALIVE) alive++;
+        if(y + 1 < scaledHeight  && cellInfo[x][y + 1] == ALIVE) alive++;
 
         //  bottom right
-        if(x + 1 <= width && y + 1 <= height  && cellInfo[x + 1][y + 1] == ALIVE) alive++;
+        if(x + 1 < scaledWidth && y + 1 < scaledHeight  && cellInfo[x + 1][y + 1] == ALIVE) alive++;
 
         return alive;
     }
