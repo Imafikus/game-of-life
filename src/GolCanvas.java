@@ -1,13 +1,10 @@
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.shape.Rectangle;
-
 
 public class GolCanvas extends Application {
 
@@ -32,11 +29,8 @@ private final Rectangle[][] cells = new Rectangle[width / cellSize][height / cel
 
         stage.setTitle("Game of Life");
 
-        // Init Canvas stuff
         Pane root = new Pane();
-        Canvas canvas = new Canvas(width, height);
 
-        // GOL init
         initCellInfoMatrix(cellInfo);
         initCells();
         // setRandomCellsToAlive(numberOfRandomCells);
@@ -73,10 +67,19 @@ private final Rectangle[][] cells = new Rectangle[width / cellSize][height / cel
         for (int i = 0; i < cellInfo.length; i++) {
             for (int j = 0; j < cellInfo.length; j++) {
                 updateCell(i, j, newCellInfo);
+            }
+        }
+        if(compareMatrices(cellInfo, newCellInfo)) System.out.println("SAME MATRICES");
+
+        cellInfo = newCellInfo;
+
+        if(compareMatrices(cellInfo, newCellInfo)) System.out.println("SAME MATRICES");
+
+        for (int i = 0; i < cellInfo.length; i++) {
+            for (int j = 0; j < cellInfo.length; j++) {
                 fillCell(i, j);
             }
         }
-        cellInfo = newCellInfo;
     }
 
     private void fillCell(int x, int y) {
@@ -131,8 +134,7 @@ private final Rectangle[][] cells = new Rectangle[width / cellSize][height / cel
         // check new life
         else if(newCellInfo[x][y] == DEAD && cellNeighbours == 3) newCellInfo[x][y] = ALIVE;
 
-        // if we stay alive
-
+        // if we stay alive do nothing
     }
 
     private int getNumberOfAliveNeighbours(int x, int y) {
@@ -177,6 +179,15 @@ private final Rectangle[][] cells = new Rectangle[width / cellSize][height / cel
             }
         }
         System.out.println(System.lineSeparator());
+    }
+
+    private boolean compareMatrices(boolean[][] m1, boolean[][] m2) {
+        for(int i = 0; i < m1.length; i++) {
+            for(int j = 0; j < m2.length; j++) {
+                if(m1[i][j] != m2[i][j]) return false;
+            }
+        }
+        return  true;
     }
 
     private void testCaseSingleCell() {
