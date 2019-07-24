@@ -1,10 +1,8 @@
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
