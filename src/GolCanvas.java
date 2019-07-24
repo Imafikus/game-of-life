@@ -39,8 +39,9 @@ private final Rectangle[][] cells = new Rectangle[width / cellSize][height / cel
         // GOL init
         initCellInfoMatrix(cellInfo);
         initCells();
-        setRandomCellsToAlive(numberOfRandomCells);
-        // updateCells(gc);
+        // setRandomCellsToAlive(numberOfRandomCells);
+        testCaseSingleCell();
+        updateAllCells();
         root.getChildren().addAll(createCellGroup());
 
         Scene scene = new Scene(root, width, height, Color.WHITE);
@@ -66,7 +67,7 @@ private final Rectangle[][] cells = new Rectangle[width / cellSize][height / cel
         }
     }
 
-    private void updateCells(GraphicsContext gc) {
+    private void updateAllCells() {
         for (int i = 0; i < cellInfo.length; i++) {
             for (int j = 0; j < cellInfo.length; j++) {
                 updateCell(i, j);
@@ -114,7 +115,7 @@ private final Rectangle[][] cells = new Rectangle[width / cellSize][height / cel
         }
     }
 
-    private void updateCell (int x, int y) {
+    private void updateCell (int x, int y) { //FIXME
         int cellNeighbours = getNumberOfAliveNeighbours(x, y);
 
         // check solitude
@@ -174,8 +175,12 @@ private final Rectangle[][] cells = new Rectangle[width / cellSize][height / cel
         System.out.println(System.lineSeparator());
     }
 
+    private void testCaseSingleCell() {
+        cellInfo[15][15] = ALIVE;
+        fillCell(15, 15);
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
 }
-g
