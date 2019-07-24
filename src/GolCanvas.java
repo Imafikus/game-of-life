@@ -40,7 +40,8 @@ private final Rectangle[][] cells = new Rectangle[width / cellSize][height / cel
         initCellInfoMatrix(cellInfo);
         initCells();
         // setRandomCellsToAlive(numberOfRandomCells);
-        testCaseSingleCell();
+        // testCaseSingleCell();
+        testCaseSingleLine();
         updateAllCells();
         root.getChildren().addAll(createCellGroup());
 
@@ -68,12 +69,14 @@ private final Rectangle[][] cells = new Rectangle[width / cellSize][height / cel
     }
 
     private void updateAllCells() {
+        boolean[][] newCellInfo = new boolean[width / cellSize][height / cellSize];
         for (int i = 0; i < cellInfo.length; i++) {
             for (int j = 0; j < cellInfo.length; j++) {
-                updateCell(i, j);
+                updateCell(i, j, newCellInfo);
                 fillCell(i, j);
             }
         }
+        cellInfo = newCellInfo;
     }
 
     private void fillCell(int x, int y) {
@@ -115,17 +118,18 @@ private final Rectangle[][] cells = new Rectangle[width / cellSize][height / cel
         }
     }
 
-    private void updateCell (int x, int y) { //FIXME
+    private void updateCell (int x, int y, boolean[][] newCellInfo) { //FIXME
         int cellNeighbours = getNumberOfAliveNeighbours(x, y);
+        if((x > 13 && x < 17) && (y > 13 && y < 17)) System.out.printf("Number of neighbours for (%d, %d) is %d\n", x, y, cellNeighbours);
 
         // check solitude
-        if(cellNeighbours <= 1) cellInfo[x][y] = DEAD;
+        if(cellNeighbours <= 1) newCellInfo[x][y] = DEAD;
 
         // check overpopulation
-        else if(cellNeighbours >= 4) cellInfo[x][y] = DEAD;
+        else if(cellNeighbours >= 4) newCellInfo[x][y] = DEAD;
 
         // check new life
-        else if(cellInfo[x][y] == DEAD && cellNeighbours == 3) cellInfo[x][y] = ALIVE;
+        else if(newCellInfo[x][y] == DEAD && cellNeighbours == 3) newCellInfo[x][y] = ALIVE;
 
         // if we stay alive
 
@@ -136,7 +140,7 @@ private final Rectangle[][] cells = new Rectangle[width / cellSize][height / cel
         int scaledWidth = width / cellSize;
         int scaledHeight = height / cellSize;
 
-        System.out.println("Current x, y: " + x + " " + y);
+        // System.out.println("Current x, y: " + x + " " + y);
         int alive = 0;
 
         //upper left
@@ -179,6 +183,18 @@ private final Rectangle[][] cells = new Rectangle[width / cellSize][height / cel
         cellInfo[15][15] = ALIVE;
         fillCell(15, 15);
     }
+
+    private void testCaseSingleLine() {
+        cellInfo[15][15] = ALIVE;
+        fillCell(15, 15);
+
+        cellInfo[15][16] = ALIVE;
+        fillCell(15, 16);
+
+        cellInfo[15][17] = ALIVE;
+        fillCell(15, 17);
+    }
+
 
     public static void main(String[] args) {
         launch(args);
